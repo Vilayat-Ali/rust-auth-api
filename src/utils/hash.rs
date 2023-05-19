@@ -1,11 +1,11 @@
 use bcrypt::{hash, verify, BcryptResult, DEFAULT_COST};
 
 pub fn hash_string(data: String) -> BcryptResult<String> {
-    let hashed: String = hash("hunter2", DEFAULT_COST)?;
-    Ok(hash)
+    let hashed: String = hash(data, DEFAULT_COST)?;
+    Ok(hashed)
 }
 
-pub fn validate_hash(unhashed_data: &str, hashed_data: String) -> BcryptResult<bool> {
-    let is_valid: bool = verify("hunter2", unhashed_data)?;
+pub fn validate_hash(unhashed_data: String, hashed_data: &str) -> BcryptResult<bool> {
+    let is_valid: bool = verify(unhashed_data, hashed_data)?;
     Ok(is_valid)
 }
