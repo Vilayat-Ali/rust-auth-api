@@ -11,8 +11,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(
                 web::scope("/api")
-                    .route("/register", web::post().to(register::hello))
-                    .route("/login", web::post().to(login::hello)),
+                    .route("/register", web::post().to(register))
+                    .route("/login", web::post().to(login)),
             )
             .service(fs::Files::new("/pages", ".").show_files_listing())
             .route("/docs", web::get().to(serve_docs))

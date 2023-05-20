@@ -18,7 +18,7 @@ pub struct RegisterResBody {
     pub refresh_token: String,
 }
 
-pub async fn hello(user_info: web::Json<RegisterReqBody>) -> impl Responder {
+pub async fn register(user_info: web::Json<RegisterReqBody>) -> impl Responder {
     // hashing the password
     match hash_string(&user_info.password) {
         Ok(_hashed_password) => {
