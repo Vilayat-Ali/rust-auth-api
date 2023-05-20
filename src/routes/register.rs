@@ -14,34 +14,34 @@ pub struct RegisterReqBody {
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct RegisterResBody {
-    pub accessToken: String,
-    pub refreshToken: String,
+    pub access_token: String,
+    pub refresh_token: String,
 }
 
 pub async fn hello(user_info: web::Json<RegisterReqBody>) -> impl Responder {
     // hashing the password
     match hash_string(&user_info.password) {
         Ok(_hashed_password) => {
-            let accessToken: String = generate_access_token(
+            let access_token: String = generate_access_token(
                 user_info.username.clone(),
                 user_info.email.clone(),
                 user_info.password.clone(),
             )
             .unwrap();
 
-            let refreshToken: String = generate_refresh_token(
+            let refresh_token: String = generate_refresh_token(
                 user_info.username.clone(),
                 user_info.email.clone(),
                 user_info.password.clone(),
             )
             .unwrap();
 
-            let res_body: String = APIResponseBuilder::new()
+            let res_body: String = APIResponseBuilder::default()
                 .set_status(true)
                 .set_message("User registered successfully!")
                 .set_data(&RegisterResBody {
-                    accessToken,
-                    refreshToken,
+                    access_token,
+                    refresh_token,
                 })
                 .build();
 

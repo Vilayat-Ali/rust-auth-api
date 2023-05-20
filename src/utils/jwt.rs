@@ -1,5 +1,5 @@
 use jsonwebtoken::{
-    decode, encode, errors, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
+    decode, encode, errors, DecodingKey, EncodingKey, Header, TokenData, Validation,
 };
 use serde::{Deserialize, Serialize};
 

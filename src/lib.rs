@@ -1,5 +1,7 @@
 extern crate bcrypt;
 
+use std::default::Default;
+
 pub mod db;
 pub mod routes;
 pub mod utils;
@@ -25,18 +27,20 @@ pub struct APIResponseBuilder<'a, T> {
     pub data: Option<T>,
 }
 
-impl<'a, T> APIResponseBuilder<'a, T>
-where
-    T: Serialize,
-{
-    pub fn new() -> Self {
+impl<'a, T> Default for APIResponseBuilder<'a, T> {
+    fn default() -> Self {
         Self {
             status: None,
             message: None,
             data: None,
         }
     }
+}
 
+impl<'a, T> APIResponseBuilder<'a, T>
+where
+    T: Serialize,
+{
     pub fn set_status(&mut self, status: bool) -> &mut APIResponseBuilder<'a, T> {
         self.status = Some(status);
         self
