@@ -1,4 +1,4 @@
-pub mod jwt;
 pub mod hash;
+pub mod jwt;
 
-pub use jwt::{generate_jwt_token, validate_jwt_token};
+pub use jwt::{generate_access_token, generate_refresh_token, validate_jwt_token};
