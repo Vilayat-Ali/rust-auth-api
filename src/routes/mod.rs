@@ -1,4 +1,3 @@
-pub mod docs;
 mod login;
 mod register;
 

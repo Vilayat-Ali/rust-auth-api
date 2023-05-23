@@ -1,5 +1,10 @@
+use std::collections::HashMap;
+
+use actix_web::{web, App, HttpServer};
+
+use auth_api::db::DB;
+
 // routes
-use auth_api::routes::docs::serve_docs;
 use auth_api::routes::{login, register};
 
 #[actix_web::main]
