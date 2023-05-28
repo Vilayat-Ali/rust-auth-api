@@ -1,6 +1,6 @@
 use bcrypt::{hash, verify, BcryptResult, DEFAULT_COST};
 
-pub fn hash_string(data: &String) -> BcryptResult<String> {
+pub fn hash_string(data: String) -> BcryptResult<String> {
     let hashed: String = hash(data, DEFAULT_COST)?;
     Ok(hashed)
 }

@@ -1,5 +1,5 @@
 use actix_web::{web, App, HttpServer};
-use auth_api::db::{create_table, init, Table};
+use auth_api::db::{create_user_table, init};
 
 // routes
 use auth_api::routes::{login, register};
@@ -7,7 +7,7 @@ use auth_api::routes::{login, register};
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     init().await;
-    create_table("user", Table::generate_schema_user()).await;
+    create_user_table().await;
     HttpServer::new(|| {
         App::new().service(
             web::scope("/api")

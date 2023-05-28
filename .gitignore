@@ -1,3 +1,7 @@
 /target
 node_modules
 yarn.lock
+/*.db
+/auth.db
+/auth.db-shm
+/auth.db-wal
