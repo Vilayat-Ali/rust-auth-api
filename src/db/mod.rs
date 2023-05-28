@@ -42,13 +42,13 @@ impl DB {
         Ok(res)
     }
 
-    pub async fn insert_into_table(
+    pub async fn insert_into_table<'a>(
         &mut self,
         table_name: &str,
-        data_model: HashMap<&'static str, &'static str>,
+        data_model: HashMap<&'a str, &'a str>,
     ) -> Result<SqliteQueryResult, Error> {
         let sql_query: String = format!(
-            "INSERT INTO table {} ({}) VALUES ({});",
+            "INSERT INTO {} ({}) VALUES ({});",
             table_name,
             &data_model
                 .iter()
@@ -57,7 +57,7 @@ impl DB {
                 .join(","),
             &data_model
                 .iter()
-                .map(|x| format!("{}", x.1))
+                .map(|x| format!("'{}'", x.1))
                 .collect::<Vec<String>>()
                 .join(","),
         );

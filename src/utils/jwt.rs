@@ -8,19 +8,13 @@ use serde::{Deserialize, Serialize};
 pub struct Claims {
     pub username: String,
     pub email: String,
-    pub password: String,
     pub exp: usize,
 }
 
-pub fn generate_access_token(
-    username: String,
-    email: String,
-    password: String,
-) -> errors::Result<String> {
+pub fn generate_access_token(username: String, email: String) -> errors::Result<String> {
     let claims: Claims = Claims {
         username,
         email,
-        password,
         exp: 2,
     };
 
@@ -33,15 +27,10 @@ pub fn generate_access_token(
     Ok(token)
 }
 
-pub fn generate_refresh_token(
-    username: String,
-    email: String,
-    password: String,
-) -> errors::Result<String> {
+pub fn generate_refresh_token(username: String, email: String) -> errors::Result<String> {
     let claims: Claims = Claims {
         username,
         email,
-        password,
         exp: 2,
     };
 

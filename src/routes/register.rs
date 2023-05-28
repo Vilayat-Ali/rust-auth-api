@@ -1,9 +1,11 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
+use crate::db::DB;
 use crate::utils::hash::hash_string;
 use crate::utils::jwt::{generate_access_token, generate_refresh_token};
 use crate::APIResponseBuilder;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct RegisterReqBody {
@@ -19,22 +21,25 @@ pub struct RegisterResBody {
 }
 
 pub async fn register(user_info: web::Json<RegisterReqBody>) -> impl Responder {
+    let mut db_instance = DB::connect("authdb".to_string()).await.unwrap();
+
     // hashing the password
     match hash_string(&user_info.password) {
-        Ok(_hashed_password) => {
-            let access_token: String = generate_access_token(
-                user_info.username.clone(),
-                user_info.email.clone(),
-                user_info.password.clone(),
-            )
-            .unwrap();
+        Ok(ref hashed_password) => {
+            let access_token: String =
+                generate_access_token(user_info.username.clone(), user_info.email.clone()).unwrap();
 
-            let refresh_token: String = generate_refresh_token(
-                user_info.username.clone(),
-                user_info.email.clone(),
-                user_info.password.clone(),
-            )
-            .unwrap();
+            let refresh_token: String =
+                generate_refresh_token(user_info.username.clone(), user_info.email.clone())
+                    .unwrap();
+
+            // saving into db
+            let mut schema: HashMap<&str, &str> = HashMap::new();
+            schema.insert("username", user_info.username.as_str());
+            schema.insert("email", user_info.email.as_str());
+            schema.insert("password", hashed_password);
+            println!("{:#?}", schema);
+            db_instance.insert_into_table("user", schema).await.unwrap();
 
             let res_body: String = APIResponseBuilder::default()
                 .set_status(true)
