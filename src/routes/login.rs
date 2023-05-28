@@ -1,6 +1,7 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
+use crate::db::get_user_by_email;
 use crate::utils::hash::validate_hash;
 // use crate::utils::jwt::{generate_access_token, generate_refresh_token};
 use crate::APIResponseBuilder;
@@ -20,6 +21,8 @@ pub struct LoginResBody {
 pub async fn login(user_info: web::Json<LoginReqBody>) -> impl Responder {
     // response
     let mut res_body: APIResponseBuilder<LoginResBody> = APIResponseBuilder::default();
+
+    let _suspected_user = get_user_by_email(&user_info.email).await;
 
     match validate_hash(
         &user_info.password,

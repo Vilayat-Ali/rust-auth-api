@@ -1,7 +1,7 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-use crate::db::add_user;
+use crate::db::insert_user;
 use crate::utils::hash::hash_string;
 use crate::utils::jwt::{generate_access_token, generate_refresh_token};
 use crate::APIResponseBuilder;
@@ -32,7 +32,7 @@ pub async fn register(user_info: web::Json<RegisterReqBody>) -> impl Responder {
                 generate_refresh_token(user_info.username.clone(), user_info.email.clone())
                     .unwrap();
 
-            add_user(&username, &email, &hashed_password).await;
+            insert_user(&username, &email, &hashed_password).await;
 
             let res_body: String = APIResponseBuilder::default()
                 .set_status(true)
