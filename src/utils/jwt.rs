@@ -11,7 +11,7 @@ pub struct Claims {
     pub exp: usize,
 }
 
-pub fn generate_access_token(username: String, email: String) -> errors::Result<String> {
+pub fn generate_access_token<'a>(username: String, email: String) -> errors::Result<String> {
     let claims: Claims = Claims {
         username,
         email,
