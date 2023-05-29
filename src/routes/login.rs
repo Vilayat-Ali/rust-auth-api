@@ -24,7 +24,7 @@ pub async fn login(user_info: web::Json<LoginReqBody>) -> impl Responder {
 
     let user_data: (String, String, String) = get_user_by_email(&user_info.email).await;
 
-    if user_data.0 == String::default() && user_data.1 == String::default() {
+    if &user_data.0 == &String::default() && &user_data.1 == &String::default() {
         return HttpResponse::Forbidden().body("User doesn't exists");
     }
 
@@ -32,14 +32,10 @@ pub async fn login(user_info: web::Json<LoginReqBody>) -> impl Responder {
         Ok(is_valid) => match is_valid {
             true => {
                 let access_token: String =
-                    generate_access_token(user_data.clone().0.clone(), user_data.clone().1.clone())
-                        .unwrap();
+                    generate_access_token(&user_data.0, &user_data.1).unwrap();
 
-                let refresh_token: String = generate_refresh_token(
-                    user_data.clone().0.clone(),
-                    user_data.clone().1.clone(),
-                )
-                .unwrap();
+                let refresh_token: String =
+                    generate_refresh_token(&user_data.0, &user_data.1).unwrap();
 
                 let response: String = res_body
                     .set_status(true)

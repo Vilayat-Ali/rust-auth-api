@@ -26,11 +26,10 @@ pub async fn register(user_info: web::Json<RegisterReqBody>) -> impl Responder {
     match hash_string(user_info.password.clone()) {
         Ok(ref hashed_password) => {
             let access_token: String =
-                generate_access_token(user_info.username.clone(), user_info.email.clone()).unwrap();
+                generate_access_token(&user_info.username, &user_info.email).unwrap();
 
             let refresh_token: String =
-                generate_refresh_token(user_info.username.clone(), user_info.email.clone())
-                    .unwrap();
+                generate_refresh_token(&user_info.username, &user_info.email).unwrap();
 
             insert_user(&username, &email, &hashed_password).await;
 

@@ -20,7 +20,7 @@ pub async fn create_user_table<'a>() {
 }
 
 pub async fn insert_user<'a>(username: &'a str, email: &'a str, password: &'a str) {
-    let db: sqlx::Pool<Sqlite> = sqlx::SqlitePool::connect(DB_URL).await.unwrap();
+    let db = sqlx::SqlitePool::connect(DB_URL).await.unwrap();
     sqlx::query(&format!(
         "INSERT INTO user (username, email, password) VALUES ('{}', '{}', '{}');",
         username, email, password
